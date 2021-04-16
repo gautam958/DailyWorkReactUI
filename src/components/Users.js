@@ -1,5 +1,7 @@
+import userEvent from '@testing-library/user-event';
 import React, { useState, useEffect } from 'react';
 import UserService from '../services/UserService';
+import MySwal from './common/Sweetalert/SweetAlert';
 
 export default function Users() {
 
@@ -11,21 +13,100 @@ export default function Users() {
         Email: '',
         ContactNo: '',
         Country: '',
+        EError: [{
+            Aserid: '',
+            APassword: '',
+            AConfirmPassword: '',
+            AFullName: '',
+            AEmail: '',
+            AContactNo: '',
+            ACountry: '',
+        }
+        ]
     });
+
+    const [UserError, SetUserError] = useState({
+        EUserid: '',
+        EPassword: '',
+        EConfirmPassword: '',
+        EFullName: '',
+        EEmail: '',
+        EContactNo: '',
+        ECountry: '',
+    });
+
     const handleChange = (event) => {
+
         SetUserData({ ...UserData, [event.target.name]: event.target.value });
-        console.log(UserData.Userid);
-        // Call API
     };
     const ResetForm = (e) => {
         console.log(e);
     };
-    const SaveUser = (e) => {
+    const SaveUser = async (e) => {
         e.preventDefault();
-        console.log(UserData);
-        const result = UserService.UserSave().Save(UserData);
-        console.log(result);
+        ValidateUser(UserData);
+        if (UserData.Error === '') {
+            const result = await UserService.UserSave().Save(UserData);
+            if (result.status === 200) {
+                console.log("User Saved Successfully");
+                MySwal.fire(
+                    'User Saved!',
+                    'User Saved Successfully!',
+                    'success'
+                )
+            }
+            else {
+                MySwal.fire(
+                    'Error Occured!',
+                    result,
+                    'error'
+                )
+            }
+        }
+        else {
+            MySwal.fire(
+                'Error Occured!',
+                UserData.Error,
+                'error'
+            )
+        }
+
     };
+
+    const ValidateUser = (UserData) => {
+        // SetUserError({ ...UserError, EUserid: "Gautam" });
+        if (UserData.Userid === '') {
+            SetUserData({ ...UserError, [UserError.EUserid.name]: 'Userid is cannot be left blank' });
+
+        }
+        if (UserData.Password === '') {
+            SetUserData({ ...UserError, [UserError.EPassword]: 'Password is cannot be left blank' });
+
+        }
+        // if (UserData.ConfirmPassword === '') {
+        //     SetUserData({ ...UserData, EError: { [UserData.UError.ConfirmPassword]: 'ConfirmPassword is cannot be left blank' } });
+
+        // }
+        // if (UserData.FullName === '') {
+        //     SetUserData({ ...UserData, EError: { [UserData.UError.FullName]: 'FullName is cannot be left blank' } });
+
+        // }
+        // if (UserData.Email === '') {
+        //     SetUserData({ ...UserData, EError: { [UserData.UError.Email]: 'Email is cannot be left blank' } });
+
+        // }
+        // if (UserData.ContactNo === '') {
+        //     SetUserData({ ...UserData, EError: { [UserData.UError.ContactNo]: 'ContactNo is cannot be left blank' } });
+
+        // }
+        // if (UserData.Country === '') {
+        //     SetUserData({ ...UserData, EError: { [UserData.UError.Country]: 'Country is cannot be left blank' } });
+
+        // }
+        console.log(UserError);
+        console.log(UserData);
+        return UserData.EError;
+    }
 
     return (
         <div>
@@ -126,6 +207,7 @@ export default function Users() {
                                                             name="ConfirmPassword"
                                                             value={UserData.ConfirmPassword}
                                                             placeholder="Enter Confirm Password"
+                                                            onChange={handleChange}
                                                         ></input>
                                                     </div>
 
