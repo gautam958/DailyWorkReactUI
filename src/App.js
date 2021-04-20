@@ -1,3 +1,4 @@
+import ClientProfile from "./components/ClientProfile";
 import Dashboard from "./components/Dashboard";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
@@ -9,7 +10,8 @@ function App() {
     <div className="wrapper">
       <Header />
       <Menu />
-      <Users />
+      {/* <Users /> */}
+      <ClientProfile />
       <Footer />
     </div>
   );

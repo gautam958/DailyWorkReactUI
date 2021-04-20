@@ -1,53 +1,68 @@
-import userEvent from '@testing-library/user-event';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import UserService from '../services/UserService';
 import MySwal from './common/Sweetalert/SweetAlert';
+import UsersValidation from './UsersValidation';
+import CustomInput from './common/CustomInput';
 
 export default function Users() {
 
-    const [UserData, SetUserData] = useState({
+    const intiState = {
         Userid: '',
         Password: '',
         ConfirmPassword: '',
         FullName: '',
         Email: '',
         ContactNo: '',
-        Country: '',
-        EError: [{
-            Aserid: '',
-            APassword: '',
-            AConfirmPassword: '',
-            AFullName: '',
-            AEmail: '',
-            AContactNo: '',
-            ACountry: '',
-        }
-        ]
+        Country: ''
+    };
+    const txtUserid = React.createRef({});
+    const txtPassword = React.createRef({});
+    const txtConfirmPassword = React.createRef({});
+    const txtFullName = React.createRef({});
+    const txtEmail = React.createRef({});
+    const txtContactNo = React.createRef({});
+    const txtCountry = React.createRef({});
+
+    const [UserData, SetUserData] = useState({
+        intiState
     });
 
-    const [UserError, SetUserError] = useState({
-        EUserid: '',
-        EPassword: '',
-        EConfirmPassword: '',
-        EFullName: '',
-        EEmail: '',
-        EContactNo: '',
-        ECountry: '',
-    });
+    const [errors, Seterrors] = useState({});
 
     const handleChange = (event) => {
-
         SetUserData({ ...UserData, [event.target.name]: event.target.value });
+        Seterrors(UsersValidation(UserData));
+        InputErrorSync('txt' + event.target.name);
     };
+
+    const InputErrorSync = (name) => {
+        console.log(name);
+        txtUserid.current.classList.add("form-control");
+    }
+
     const ResetForm = (e) => {
-        console.log(e);
-    };
+
+        ClearForm();
+
+    }
+
+    const ClearForm = () => {
+        Seterrors({});
+        SetUserData({
+            intiState
+        });
+        console.log(txtUserid);
+        txtUserid.current.focus();
+    }
+
+    // const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+    // delay(3000);
     const SaveUser = async (e) => {
         e.preventDefault();
-        ValidateUser(UserData);
-        if (UserData.Error === '') {
+        if (Seterrors(UsersValidation(UserData))) {
             const result = await UserService.UserSave().Save(UserData);
             if (result.status === 200) {
+                ClearForm();
                 console.log("User Saved Successfully");
                 MySwal.fire(
                     'User Saved!',
@@ -61,6 +76,7 @@ export default function Users() {
                     result,
                     'error'
                 )
+                txtUserid.current.focus();
             }
         }
         else {
@@ -69,44 +85,9 @@ export default function Users() {
                 UserData.Error,
                 'error'
             )
+            txtUserid.current.focus();
         }
-
     };
-
-    const ValidateUser = (UserData) => {
-        // SetUserError({ ...UserError, EUserid: "Gautam" });
-        if (UserData.Userid === '') {
-            SetUserData({ ...UserError, [UserError.EUserid.name]: 'Userid is cannot be left blank' });
-
-        }
-        if (UserData.Password === '') {
-            SetUserData({ ...UserError, [UserError.EPassword]: 'Password is cannot be left blank' });
-
-        }
-        // if (UserData.ConfirmPassword === '') {
-        //     SetUserData({ ...UserData, EError: { [UserData.UError.ConfirmPassword]: 'ConfirmPassword is cannot be left blank' } });
-
-        // }
-        // if (UserData.FullName === '') {
-        //     SetUserData({ ...UserData, EError: { [UserData.UError.FullName]: 'FullName is cannot be left blank' } });
-
-        // }
-        // if (UserData.Email === '') {
-        //     SetUserData({ ...UserData, EError: { [UserData.UError.Email]: 'Email is cannot be left blank' } });
-
-        // }
-        // if (UserData.ContactNo === '') {
-        //     SetUserData({ ...UserData, EError: { [UserData.UError.ContactNo]: 'ContactNo is cannot be left blank' } });
-
-        // }
-        // if (UserData.Country === '') {
-        //     SetUserData({ ...UserData, EError: { [UserData.UError.Country]: 'Country is cannot be left blank' } });
-
-        // }
-        console.log(UserError);
-        console.log(UserData);
-        return UserData.EError;
-    }
 
     return (
         <div>
@@ -150,49 +131,34 @@ export default function Users() {
 
                                             <div className="form-group">
                                                 <label for="Userid">User Name</label>
-                                                <input type="text"
-                                                    className="form-control"
-                                                    name="Userid"
-                                                    value={UserData.Userid}
-                                                    placeholder="Enter User Name"
-                                                    autoFocus="true"
-                                                    onChange={handleChange}
-                                                />
+                                                <CustomInput type="text" name="Userid" onChange={handleChange} value={UserData.Userid} required={true}
+                                                    className={errors.Userid === "" ? "form-control" : "form-control is-invalid"} placeholder="Enter User Name" autoFocus="true" InputRef={txtUserid}
+                                                    ErrorText={errors.Userid} />
+                                                {errors.Userid && <p className=" form-control is-invalid"  >{errors.Userid}</p>}
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label for="Password">Password</label>
-                                                        <input
-                                                            type="Password"
-                                                            className="form-control"
-                                                            name="Password"
-                                                            value={UserData.Password}
-                                                            placeholder="Enter Password"
-                                                            onChange={handleChange}
-                                                        ></input>
+                                                        <CustomInput type="text" name="Password" onChange={handleChange} value={UserData.Password} required={true}
+                                                            className="form-control" placeholder="Enter Password" InputRef={txtPassword} />
+                                                        {errors.Password && <p style={{ colo: 'red' }}>{errors.Password}</p>}
                                                     </div>
                                                     <div className="form-group">
                                                         <label for="FullName">Full Name</label>
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="FullName"
-                                                            value={UserData.FullName}
-                                                            placeholder="Enter Full Name"
-                                                            onChange={handleChange}
-                                                        ></input>
+
+                                                        <CustomInput type="text" name="FullName" onChange={handleChange} value={UserData.FullName} required={true}
+                                                            className="form-control" placeholder="Enter FullName" InputRef={txtFullName} />
+                                                        {errors.FullName && <p style={{ colo: 'red' }}>{errors.FullName}</p>}
                                                     </div>
                                                     <div className="form-group">
                                                         <label for="ContactNo">Contact Number</label>
-                                                        <input
-                                                            type="tel"
-                                                            className="form-control"
-                                                            name="ContactNo"
-                                                            value={UserData.ContactNo}
-                                                            placeholder="Enter Contact Number"
-                                                            onChange={handleChange}
-                                                        ></input>
+
+
+                                                        <CustomInput type="tel" name="ContactNo" onChange={handleChange} value={UserData.ContactNo} required={true}
+                                                            className="form-control" placeholder="Enter Contact Number" InputRef={txtContactNo} />
+
+                                                        {errors.ContactNo && <p style={{ colo: 'red' }}>{errors.ContactNo}</p>}
                                                     </div>
                                                 </div>
 
@@ -201,37 +167,28 @@ export default function Users() {
                                                         <label for="ConfirmPassword">
                                                             Confirm Password
                                                     </label>
-                                                        <input
-                                                            type="password"
-                                                            className="form-control"
-                                                            name="ConfirmPassword"
-                                                            value={UserData.ConfirmPassword}
-                                                            placeholder="Enter Confirm Password"
-                                                            onChange={handleChange}
-                                                        ></input>
+
+                                                        <CustomInput type="password" name="ConfirmPassword" onChange={handleChange} value={UserData.ConfirmPassword} required={true}
+                                                            className="form-control" placeholder="Enter ConfirmPassword" InputRef={txtConfirmPassword} />
+
+                                                        {errors.ConfirmPassword && <p style={{ colo: 'red' }}>{errors.ConfirmPassword}</p>}
                                                     </div>
 
                                                     <div className="form-group">
                                                         <label for="Email">Email</label>
-                                                        <input
-                                                            type="email"
-                                                            className="form-control"
-                                                            name="Email"
-                                                            value={UserData.Email}
-                                                            placeholder="Enter Email"
-                                                            onChange={handleChange}
-                                                        ></input>
+
+                                                        <CustomInput type="email" name="Email" onChange={handleChange} value={UserData.Email} required={true}
+                                                            className="form-control" placeholder="Enter Email" InputRef={txtEmail} />
+
+                                                        {errors.Email && <p style={{ colo: 'red' }}>{errors.Email}</p>}
                                                     </div>
                                                     <div className="form-group">
                                                         <label for="txtCountry">Country</label>
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="Country"
-                                                            value={UserData.Country}
-                                                            placeholder="Enter Country"
-                                                            onChange={handleChange}
-                                                        ></input>
+
+                                                        <CustomInput type="text" name="Country" onChange={handleChange} value={UserData.Country} required={true}
+                                                            className="form-control" placeholder="Enter Country" InputRef={txtCountry} />
+
+                                                        {errors.Country && <p style={{ colo: 'red' }}>{errors.Country}</p>}
                                                     </div>
                                                 </div>
                                             </div>
@@ -239,7 +196,7 @@ export default function Users() {
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <button type="button" onClick={ResetForm} className="btn btn-info float-right  ml-2  ">  <i class="fas fa-retweet"></i> Cancel</button>
+                                        <button type="reset" onClick={ResetForm} className="btn btn-info float-right  ml-2  ">  <i class="fas fa-retweet"></i> Cancel</button>
                                         <button type="button" onClick={SaveUser} className="btn btn-info float-right "> <i class="far fa-save"></i> Save</button>
 
                                     </div>
