@@ -3,7 +3,8 @@ import Dashboard from "./components/Dashboard";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import Menu from "./components/layout/Menu";
-import Users from "./components/Users";
+import UserForm from "./components/Users/UserForm";
+//import Users from "./components/Users";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       <Header />
       <Menu />
       {/* <Users /> */}
-      <ClientProfile />
+      {/* <ClientProfile /> */}
+      <UserForm />
       <Footer />
     </div>
   );

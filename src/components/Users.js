@@ -3,7 +3,8 @@ import UserService from '../services/UserService';
 import MySwal from './common/Sweetalert/SweetAlert';
 import UsersValidation from './UsersValidation';
 import CustomInput from './common/CustomInput';
-
+////////////////////////////  This Form is used tradition way of Validation  ///////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export default function Users() {
 
     const intiState = {

@@ -7,18 +7,16 @@ import "../styles.css";
 const required = "This field is required";
 const maxLength = "Your input exceed maximum length";
 
-// Error Component
 const errorMessage = error => {
     return <div className="invalid-feedback">{error}</div>;
 };
 
 export default function ClientProfile() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, getValues, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
 
-    console.log(errors);
-
-
+    console.warn("Form Value ", getValues());
+    console.warn("Form Error ", errors);
     return (
         <div className="content-wrapper">
             <div className="col-sm-12">
@@ -86,8 +84,11 @@ export default function ClientProfile() {
                             className="form-control"
                             type="url"
                             placeholder="Website"
-                            {...register('Website')}
+                            {...register('Website', { required: true })}
                         />
+                        {errors.Website &&
+                            errors.Website.type === "required" &&
+                            errorMessage(required)}
                     </div>
                     <div className="form-group">
                         <input
@@ -137,8 +138,10 @@ export default function ClientProfile() {
                             />
                             <label className="form-check-label" htmlFor="inlineRadio3">
                                 Non-binary
-              </label>
+                              </label>
                         </div>
+                        {errors.genderOptions &&
+                            errorMessage("Please select Gender")}
                     </div>
                     <div className="form-group">
                         <input
