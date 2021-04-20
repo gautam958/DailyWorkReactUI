@@ -9,6 +9,17 @@ https://github.com/cpvariyani/AdminLte3-integration-with-ReactJs
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+MongoDB
+DBNAME :- DailyWork
+Collection :- Users
+
+"Userid": "111",
+"Password": "111",
+"FullName": "111",
+"Email": "111@gmail.com",
+"ContactNo": "555656565656",
+"Country": "India"
+
 ## Available Scripts
 
 In the project directory, you can run:
