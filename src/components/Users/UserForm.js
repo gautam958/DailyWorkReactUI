@@ -39,6 +39,29 @@ export default function UserForm() {
         }
     }
 
+    const checkUserid = async (e) => {
+        const _Userid = getValues("Userid");
+        // const result = await UserService.CheckUserExist().checkUserid(_Userid);
+        // console.log(result);
+        // if (result.status === 200) {
+        //     console.log(result);
+        //     MySwal.fire(
+        //         'Check User exists',
+        //         'User already exists',
+        //         'success'
+        //     )
+        // }
+        // else {
+        //     MySwal.fire(
+        //         'Error Occured!',
+        //         result,
+        //         'error'
+        //     )
+        //     setFocus("Userid");
+        // }
+    }
+
+
     const Passwordref = useRef({});
     Passwordref.current = watch("Password", "");
 
@@ -93,8 +116,10 @@ export default function UserForm() {
 
                                             <div className="form-group">
                                                 <label for="Userid">User Name</label>
-                                                <input type="text" className="form-control" placeholder="Enter Userid"
-                                                    {...register('Userid', { required: true, maxLength: 20 })} />
+                                                <input type="text" className={`form-control ${errors.Userid ? 'is-invalid' : ''}`} placeholder="Enter Userid"
+                                                    {...register('Userid', { required: true, maxLength: 20 })}
+                                                    onBlur={checkUserid}
+                                                />
                                                 {errors.Userid &&
                                                     errors.Userid.type === "required" &&
                                                     errorMessage(required)}
@@ -102,11 +127,12 @@ export default function UserForm() {
                                                     errors.Userid.type === "maxLength" &&
                                                     errorMessage(maxLength)}
                                             </div>
+
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label for="Password">Password</label>
-                                                        <input type="password" className="form-control" placeholder="Enter Password"
+                                                        <input type="password" className={`form-control ${errors.Password ? 'is-invalid' : ''}`} placeholder="Enter Password"
                                                             {...register('Password', { required: true, minLength: 4, maxLength: 12 })} />
                                                         {errors.Password &&
                                                             errors.Password.type === "required" &&
@@ -121,7 +147,7 @@ export default function UserForm() {
                                                     <div className="form-group">
                                                         <label for="FullName">Full Name</label>
 
-                                                        <input type="text" className="form-control" placeholder="Enter FullName"
+                                                        <input type="text" className={`form-control ${errors.FullName ? 'is-invalid' : ''}`} placeholder="Enter FullName"
                                                             {...register('FullName', { required: true })} />
                                                         {errors.FullName &&
                                                             errors.FullName.type === "required" &&
@@ -130,7 +156,7 @@ export default function UserForm() {
                                                     <div className="form-group">
                                                         <label for="ContactNo">Contact Number</label>
 
-                                                        <input type="tel" className="form-control" placeholder="Enter Contact Number"
+                                                        <input type="tel" className={`form-control ${errors.ContactNo ? 'is-invalid' : ''}`} placeholder="Enter Contact Number"
                                                             {...register('ContactNo', { required: true })} />
 
                                                         {errors.ContactNo &&
@@ -145,7 +171,7 @@ export default function UserForm() {
                                                             Confirm Password
                                                 </label>
 
-                                                        <input type="password" className="form-control" placeholder="Enter ConfirmPassword"
+                                                        <input type="password" className={`form-control ${errors.ConfirmPassword ? 'is-invalid' : ''}`} placeholder="Enter ConfirmPassword"
                                                             {...register('ConfirmPassword', {
                                                                 required: true,
                                                                 validate: value => value === Passwordref.current || "The passwords do not match"
@@ -160,7 +186,7 @@ export default function UserForm() {
                                                     <div className="form-group">
                                                         <label for="Email">Email</label>
 
-                                                        <input type="email" className="form-control" placeholder="Enter Email"
+                                                        <input type="email" className={`form-control ${errors.Email ? 'is-invalid' : ''}`} placeholder="Enter Email"
                                                             {...register('Email', { required: true })} />
 
                                                         {errors.Email &&
@@ -170,7 +196,7 @@ export default function UserForm() {
                                                     <div className="form-group">
                                                         <label for="txtCountry">Country</label>
 
-                                                        <input type="text" className="form-control" placeholder="Enter Country"
+                                                        <input type="text" className={`form-control ${errors.Country ? 'is-invalid' : ''}`} placeholder="Enter Country"
                                                             {...register('Country', { required: true })} />
 
                                                         {errors.Country &&

@@ -25,5 +25,21 @@ export default {
                     }
                 )
         }
+    },
+    CheckUserExist(url = ApiUrl) {
+        return {
+            checkUserid: (Userid) => axios.get(url + '/Getuser/', {
+                params: { "userid": Userid }
+            })
+                .then((res) => {
+                    //console.log(res);
+                    return res;
+                },
+                    (error) => {
+                        // console.log(error);
+                        return error;
+                    }
+                )
+        }
     }
 }
