@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/dailyworkReactUI/static/css/main.a5f3d0c6.chunk.css",
+    "main.js": "/dailyworkReactUI/static/js/main.440ccbda.chunk.js",
+    "main.js.map": "/dailyworkReactUI/static/js/main.440ccbda.chunk.js.map",
+    "runtime-main.js": "/dailyworkReactUI/static/js/runtime-main.6ae3bcc2.js",
+    "runtime-main.js.map": "/dailyworkReactUI/static/js/runtime-main.6ae3bcc2.js.map",
+    "static/js/2.de0874fc.chunk.js": "/dailyworkReactUI/static/js/2.de0874fc.chunk.js",
+    "static/js/2.de0874fc.chunk.js.map": "/dailyworkReactUI/static/js/2.de0874fc.chunk.js.map",
+    "index.html": "/dailyworkReactUI/index.html",
+    "static/css/main.a5f3d0c6.chunk.css.map": "/dailyworkReactUI/static/css/main.a5f3d0c6.chunk.css.map",
+    "static/js/2.de0874fc.chunk.js.LICENSE.txt": "/dailyworkReactUI/static/js/2.de0874fc.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6ae3bcc2.js",
+    "static/js/2.de0874fc.chunk.js",
+    "static/css/main.a5f3d0c6.chunk.css",
+    "static/js/main.440ccbda.chunk.js"
+  ]
+}

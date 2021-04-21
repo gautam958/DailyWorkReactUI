@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/styles.css"],"names":[],"mappings":"AAAA,KACE,gBAEF,CAEA,kBACE,uBACF","file":"main.a5f3d0c6.chunk.css","sourcesContent":["body {\r\n  padding-top: 20px;\r\n  /* touch-action: none; */\r\n}\r\n\r\n.invalid-feedback {\r\n  display: block !important;\r\n}\r\n"]}
