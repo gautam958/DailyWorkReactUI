@@ -4,6 +4,12 @@ import MySwal from '../common/Sweetalert/SweetAlert';
 import UserService from '../../services/UserService';
 import "../../styles.css";
 
+// disable all types of zoom on page.
+
+window.addEventListener('wheel', e => {
+    e.preventDefault();
+}, { passive: false });
+
 // Messages
 const required = "This field is required";
 const maxLength = "Your input exceed maximum length";
@@ -15,10 +21,11 @@ const errorMessage = (error) => {
 
 export default function UserForm() {
 
-    const { register, handleSubmit, reset, watch, setFocus, getValues, formState: { errors, isValid, isDirty } } = useForm();
+    const { register, handleSubmit, reset, watch, setFocus, clearErrors, setError, getValues, formState: { errors, isValid, isDirty } } = useForm();
 
     const onSubmit = async (data) => {
-        console.log(data);
+        console.warn("Form Data : ", data);
+        console.warn("Form Error : ", errors);
         const result = await UserService.UserSave().Save(data);
         if (result.status === 200) {
             ResetForm();
@@ -39,26 +46,81 @@ export default function UserForm() {
         }
     }
 
-    const checkUserid = async (e) => {
-        const _Userid = getValues("Userid");
-        // const result = await UserService.CheckUserExist().checkUserid(_Userid);
+
+    const checkUser = async (e) => {
+        const _Userid = e.target.value;
+        // await sleep(1000);
+        // if (value === "bill") {
+        //     clearErrors("username");
+        // } else {
+        //     setError(
+        //         "username",
+        //         "notMatch",
+        //         "please choose a different username"
+        //     );
+        // }
+        const result = await UserService.CheckUserExist().checkUserid(_Userid);
         // console.log(result);
-        // if (result.status === 200) {
-        //     console.log(result);
-        //     MySwal.fire(
-        //         'Check User exists',
-        //         'User already exists',
-        //         'success'
-        //     )
-        // }
-        // else {
-        //     MySwal.fire(
-        //         'Error Occured!',
-        //         result,
-        //         'error'
-        //     )
-        //     setFocus("Userid");
-        // }
+        if (result.status === 200) {
+            console.log("User exists");
+            setError(
+                "Userid",
+                "required",
+                "Userid already exists"
+            );
+
+            // seterrors.Userid = "Userid already exists";
+            // MySwal.fire(
+            //     'Check User exists',
+            //     'User already exists',
+            //     'success'
+            // )
+        }
+        else {
+            clearErrors("Userid");
+            console.log("New User");
+
+            // MySwal.fire(
+            //     'Error Occured!',
+            //     result,
+            //     'error'
+            // )
+            //setFocus("Userid");
+        }
+    }
+
+    const checkUserid = async (e) => {
+
+
+        const _Userid = getValues("Userid");
+        const result = await UserService.CheckUserExist().checkUserid(_Userid);
+        console.log(result);
+        if (result.status === 200) {
+            console.log(result);
+            setError(
+                "Userid",
+                "required",
+                "Userid already exists"
+            );
+            // seterrors.Userid = "Userid already exists";
+            // MySwal.fire(
+            //     'Check User exists',
+            //     'User already exists',
+            //     'success'
+            // )
+        }
+        else {
+
+            // clearErrors("Userid");
+            console.log(result);
+
+            // MySwal.fire(
+            //     'Error Occured!',
+            //     result,
+            //     'error'
+            // )
+            //setFocus("Userid");
+        }
     }
 
 
@@ -118,7 +180,8 @@ export default function UserForm() {
                                                 <label for="Userid">User Name</label>
                                                 <input type="text" className={`form-control ${errors.Userid ? 'is-invalid' : ''}`} placeholder="Enter Userid"
                                                     {...register('Userid', { required: true, maxLength: 20 })}
-                                                    onBlur={checkUserid}
+                                                    // onBlur={checkUserid}
+                                                    onBlur={checkUser}
                                                 />
                                                 {errors.Userid &&
                                                     errors.Userid.type === "required" &&

@@ -5,9 +5,8 @@ import Header from "./components/layout/Header";
 import Menu from "./components/layout/Menu";
 import UserForm from "./components/Users/UserForm";
 //import Users from "./components/Users";
-window.addEventListener('wheel', e => {
-  e.preventDefault();
-}, { passive: false });
+
+
 function App() {
   return (
 
