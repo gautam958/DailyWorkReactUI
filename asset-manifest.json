@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/DailyWorkReactUI/static/css/main.a5f3d0c6.chunk.css",
-    "main.js": "/DailyWorkReactUI/static/js/main.629decc3.chunk.js",
-    "main.js.map": "/DailyWorkReactUI/static/js/main.629decc3.chunk.js.map",
-    "runtime-main.js": "/DailyWorkReactUI/static/js/runtime-main.bbd0cd7f.js",
-    "runtime-main.js.map": "/DailyWorkReactUI/static/js/runtime-main.bbd0cd7f.js.map",
-    "static/js/2.08f0a950.chunk.js": "/DailyWorkReactUI/static/js/2.08f0a950.chunk.js",
-    "static/js/2.08f0a950.chunk.js.map": "/DailyWorkReactUI/static/js/2.08f0a950.chunk.js.map",
-    "index.html": "/DailyWorkReactUI/index.html",
-    "static/css/main.a5f3d0c6.chunk.css.map": "/DailyWorkReactUI/static/css/main.a5f3d0c6.chunk.css.map",
-    "static/js/2.08f0a950.chunk.js.LICENSE.txt": "/DailyWorkReactUI/static/js/2.08f0a950.chunk.js.LICENSE.txt"
+    "main.css": "/dailyworkreactui/static/css/main.a5f3d0c6.chunk.css",
+    "main.js": "/dailyworkreactui/static/js/main.a09835bd.chunk.js",
+    "main.js.map": "/dailyworkreactui/static/js/main.a09835bd.chunk.js.map",
+    "runtime-main.js": "/dailyworkreactui/static/js/runtime-main.fd742c45.js",
+    "runtime-main.js.map": "/dailyworkreactui/static/js/runtime-main.fd742c45.js.map",
+    "static/js/2.fbdf1087.chunk.js": "/dailyworkreactui/static/js/2.fbdf1087.chunk.js",
+    "static/js/2.fbdf1087.chunk.js.map": "/dailyworkreactui/static/js/2.fbdf1087.chunk.js.map",
+    "index.html": "/dailyworkreactui/index.html",
+    "static/css/main.a5f3d0c6.chunk.css.map": "/dailyworkreactui/static/css/main.a5f3d0c6.chunk.css.map",
+    "static/js/2.fbdf1087.chunk.js.LICENSE.txt": "/dailyworkreactui/static/js/2.fbdf1087.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.bbd0cd7f.js",
-    "static/js/2.08f0a950.chunk.js",
+    "static/js/runtime-main.fd742c45.js",
+    "static/js/2.fbdf1087.chunk.js",
     "static/css/main.a5f3d0c6.chunk.css",
-    "static/js/main.629decc3.chunk.js"
+    "static/js/main.a09835bd.chunk.js"
   ]
 }
