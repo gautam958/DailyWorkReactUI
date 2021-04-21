@@ -1,6 +1,8 @@
 # Getting Started with Create React App
 
-https://gautam958.github.io/dailyworkreactui/
+https://gautam958.github.io/DailyWorkReactUI/
+
+# DailyWorkReactUI should be same as repositoryname
 
 "homepage":"dailyworkReactUI",
 
