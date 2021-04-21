@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+https://gautam958.github.io/DailyworkReactUI/
+
 "homepage":"dailyworkReactUI",
 
 npm run build --base-href "./dailyworkReactUI" --prod

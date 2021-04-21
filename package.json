@@ -1,8 +1,8 @@
 {
-  "name": "dailywork",
+  "name": "Dailywork",
   "version": "1.0.0.1",
-  "private": true,
-  "homepage": "dailyworkReactUI",
+  "private": false,
+  "homepage": "https://gautam958.github.io/DailyworkReactUI/",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
