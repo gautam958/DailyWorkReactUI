@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-https://gautam958.github.io/DailyworkReactUI/
+https://gautam958.github.io/dailyworkreactui/
 
 "homepage":"dailyworkReactUI",
 
