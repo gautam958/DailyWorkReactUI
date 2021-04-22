@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import MySwal from '../common/Sweetalert/SweetAlert';
 import UserService from '../../services/UserService';
@@ -6,14 +6,15 @@ import "../../styles.css";
 
 // disable all types of zoom on page.
 
-window.addEventListener('wheel', e => {
-    e.preventDefault();
-}, { passive: false });
+// window.addEventListener('wheel', e => {
+//     e.preventDefault();
+// }, { passive: false });
 
 // Messages
 const required = "This field is required";
 const maxLength = "Your input exceed maximum length";
 const minLength = "Your input must be minimum length";
+const invalidUserid = "Userid already exists";
 
 const errorMessage = (error) => {
     return <div className="invalid-feedback">{error}</div>;
@@ -21,109 +22,56 @@ const errorMessage = (error) => {
 
 export default function UserForm() {
 
+    const [isValidUser, SetIsValidUser] = useState('');
     const { register, handleSubmit, reset, watch, setFocus, clearErrors, setError, getValues, formState: { errors, isValid, isDirty } } = useForm();
 
     const onSubmit = async (data) => {
+
         console.warn("Form Data : ", data);
         console.warn("Form Error : ", errors);
-        const result = await UserService.UserSave().Save(data);
-        if (result.status === 200) {
-            ResetForm();
-            console.log("User Saved Successfully");
-            MySwal.fire(
-                'User Saved!',
-                'User Saved Successfully!',
-                'success'
-            )
+        if (isValidUser !== 'N') {
+
+            const result = await UserService.UserSave().Save(data);
+            if (result.status === 200) {
+                ResetForm();
+                console.log("User Saved Successfully");
+                MySwal.fire(
+                    'User Saved!',
+                    'User Saved Successfully!',
+                    'success'
+                )
+            }
+            else {
+                MySwal.fire(
+                    'Error Occured!',
+                    result,
+                    'error'
+                )
+                setFocus("Userid");
+            }
         }
         else {
-            MySwal.fire(
-                'Error Occured!',
-                result,
-                'error'
-            )
-            setFocus("Userid");
+            setError("Userid");
         }
     }
-
+    const onErrors = (errors) => {
+        console.error(errors);
+    }
 
     const checkUser = async (e) => {
         const _Userid = e.target.value;
-        // await sleep(1000);
-        // if (value === "bill") {
-        //     clearErrors("username");
-        // } else {
-        //     setError(
-        //         "username",
-        //         "notMatch",
-        //         "please choose a different username"
-        //     );
-        // }
         const result = await UserService.CheckUserExist().checkUserid(_Userid);
         // console.log(result);
         if (result.status === 200) {
+            setError("Userid");
+            SetIsValidUser('N');
             console.log("User exists");
-            setError(
-                "Userid",
-                "required",
-                "Userid already exists"
-            );
-
-            // seterrors.Userid = "Userid already exists";
-            // MySwal.fire(
-            //     'Check User exists',
-            //     'User already exists',
-            //     'success'
-            // )
         }
         else {
-            clearErrors("Userid");
+            SetIsValidUser('');
             console.log("New User");
-
-            // MySwal.fire(
-            //     'Error Occured!',
-            //     result,
-            //     'error'
-            // )
-            //setFocus("Userid");
         }
     }
-
-    const checkUserid = async (e) => {
-
-
-        const _Userid = getValues("Userid");
-        const result = await UserService.CheckUserExist().checkUserid(_Userid);
-        console.log(result);
-        if (result.status === 200) {
-            console.log(result);
-            setError(
-                "Userid",
-                "required",
-                "Userid already exists"
-            );
-            // seterrors.Userid = "Userid already exists";
-            // MySwal.fire(
-            //     'Check User exists',
-            //     'User already exists',
-            //     'success'
-            // )
-        }
-        else {
-
-            // clearErrors("Userid");
-            console.log(result);
-
-            // MySwal.fire(
-            //     'Error Occured!',
-            //     result,
-            //     'error'
-            // )
-            //setFocus("Userid");
-        }
-    }
-
-
     const Passwordref = useRef({});
     Passwordref.current = watch("Password", "");
 
@@ -136,6 +84,7 @@ export default function UserForm() {
         setFocus("Userid");
         reset();
     }
+
     return (
         <div>
             <div className="content-wrapper">
@@ -171,7 +120,7 @@ export default function UserForm() {
                                 <div className="card-header">
                                     <div className="card-title">User Form</div>
                                 </div>
-                                <form onSubmit={handleSubmit(onSubmit)}>
+                                <form onSubmit={handleSubmit(onSubmit, onErrors)}>
                                     <div className="row">
 
                                         <div className="card-body">
@@ -181,7 +130,7 @@ export default function UserForm() {
                                                 <input type="text" className={`form-control ${errors.Userid ? 'is-invalid' : ''}`} placeholder="Enter Userid"
                                                     {...register('Userid', { required: true, maxLength: 20 })}
                                                     // onBlur={checkUserid}
-                                                    onBlur={checkUser}
+                                                    onChange={checkUser}
                                                 />
                                                 {errors.Userid &&
                                                     errors.Userid.type === "required" &&
@@ -189,6 +138,8 @@ export default function UserForm() {
                                                 {errors.Userid &&
                                                     errors.Userid.type === "maxLength" &&
                                                     errorMessage(maxLength)}
+                                                {isValidUser &&
+                                                    errorMessage(invalidUserid)}
                                             </div>
 
                                             <div className="row">

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
+
 
 export default class Menu extends Component {
     render() {
         return (
             <div>
+
                 <aside className="main-sidebar sidebar-dark-primary elevation-4">
                     {/* Brand Logo */}
                     <a href="index3.html" className="brand-link">
@@ -33,6 +37,9 @@ export default class Menu extends Component {
                             </div>
                         </div> */}
                         {/* Sidebar Menu */}
+
+
+
                         <nav className="mt-2">
                             <ul
                                 className="nav nav-pills nav-sidebar flex-column"
@@ -41,19 +48,25 @@ export default class Menu extends Component {
                                 data-accordion="false"
                             >
                                 <li className="nav-item">
-                                    <a href="/Users" className="nav-link">
+                                    <Link to="/Users/" className="nav-link">
                                         <i className="nav-icon fas fa-th" />
                                         <p>Users</p>
-                                    </a>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/AddUser/" className="nav-link">
+                                        <i className="nav-icon fas fa-th" />
+                                        <p>Add Users</p>
+                                    </Link>
                                 </li>
                                 <li className="nav-item has-treeview">
-                                    <a href="#" className="nav-link">
+                                    <Link to="#" className="nav-link">
                                         <i className="nav-icon fas fa-copy" />
                                         <p>
                                             Layout Options
-                      <i className="fas fa-angle-left right" />
+                                               <i className="fas fa-angle-left right" />
                                         </p>
-                                    </a>
+                                    </Link>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">
                                             <a href="pages/layout/top-nav.html" className="nav-link">
@@ -94,10 +107,13 @@ export default class Menu extends Component {
                                 </li>
                             </ul>
                         </nav>
+
+
                         {/* /.sidebar-menu */}
                     </div>
                     {/* /.sidebar */}
                 </aside>
+
             </div>
         );
     }

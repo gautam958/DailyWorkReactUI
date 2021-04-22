@@ -42,4 +42,19 @@ export default {
                 )
         }
     }
+    ,
+    FetchUsers(url = ApiUrl) {
+        return {
+            GetAllUsers: () => axios.get(url, options)
+                .then((res) => {
+                    //console.log(res);
+                    return res;
+                },
+                    (error) => {
+                        // console.log(error);
+                        return error;
+                    }
+                )
+        }
+    }
 }
