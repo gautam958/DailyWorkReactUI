@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import UserService from '../services/UserService';
+import UserService from '../../services/UserService';
 import MySwal from './common/Sweetalert/SweetAlert';
 import UsersValidation from './UsersValidation';
 import CustomInput from './common/CustomInput';

@@ -3,11 +3,12 @@ import axios from "axios";
 
 //const roadmapApiUrl = 'http://10.39.180.230/TrafficSystemSpeedMapAPI/api/v1/roadmap';
 //const roadmapApiUrl = 'http://192.168.128.119/TrafficSystemSpeedMapAPI/api/v1/roadmap';
-const ApiUrl = 'http://10.39.181.74/dailyworkApi/api/v1/user';
+const ApiUrl = 'http://10.39.181.74/dailyworkApi/api/v1/users';
+//const ApiUrl = 'https://dailyworknodeapi.herokuapp.com/api/users';
 const options = {
     headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
     }
 };
 export default {
@@ -46,6 +47,20 @@ export default {
     FetchUsers(url = ApiUrl) {
         return {
             GetAllUsers: () => axios.get(url, options)
+                .then((res) => {
+                    //console.log(res);
+                    return res;
+                },
+                    (error) => {
+                        // console.log(error);
+                        return error;
+                    }
+                )
+        }
+    },
+    DeleteUser(url = ApiUrl) {
+        return {
+            Delete: (_id) => axios.delete(url + '/' + _id, options)
                 .then((res) => {
                     //console.log(res);
                     return res;

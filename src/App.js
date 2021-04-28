@@ -1,10 +1,10 @@
-import ClientProfile from "./components/ClientProfile";
-import Dashboard from "./components/Dashboard";
-import Footer from "./components/layout/Footer";
-import Header from "./components/layout/Header";
-import Menu from "./components/layout/Menu";
-import UserForm from "./components/Users/UserForm";
-import UserHome from "./components/Users/UserHome";
+import ClientProfile from "./Components/Masters/ClientProfile";
+import Dashboard from "./Components/Masters/Dashboard";
+import Footer from "./Components/layout/Footer";
+import Header from "./Components/layout/Header";
+import Menu from "./Components/layout/Menu";
+import UserForm from "./Components/Masters/Users/UserForm";
+import UserHome from "./Components/Masters/Users/UserHome";
 //import Users from "./components/Users";
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 
@@ -30,7 +30,7 @@ function App() {
           <Route exact path="/Users">
             <UserHome />
           </Route>
-          <Route exact path="/AddUser">
+          <Route exact path="/Users/AddUser">
             <UserForm />
           </Route>
         </Switch>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 
-import "../styles.css";
+import "../../styles.css";
 
 // Messages
 const required = "This field is required";

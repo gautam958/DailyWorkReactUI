@@ -54,7 +54,7 @@ export default class Menu extends Component {
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/AddUser/" className="nav-link">
+                                    <Link to="/Users/AddUser/" className="nav-link">
                                         <i className="nav-icon fas fa-th" />
                                         <p>Add Users</p>
                                     </Link>

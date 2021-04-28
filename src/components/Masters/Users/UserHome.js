@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from 'react'
-import UserService from '../../services/UserService'
-
+import UserService from '../../../Services/Masters/UserService'
+import { Link } from 'react-router-dom';
 
 export default function UserHome() {
 
     const [users, setUsers] = useState(null);
 
-    const deleteUser = (id) => {
-        console.log('Delete called' + id);
+    const deleteUser = (_id) => {
+        console.log('Delete called' + _id);
+
+        UserService.DeleteUser().Delete(_id).then(x => console.warn("deleted Message ", x));
+
+        let _users = users.slice();
+        console.warn('User slice ', _users);
+        _users = _users.filter(u => { return u._id !== _id; });
+        console.warn('after delete data ', _users)
+        setUsers({ users: _users.reverse() });
+        console.warn('set session delete data ', users)
     }
     useEffect(() => {
 
         async function fetchData() {
             // You can await here
-            const response = await UserService.FetchUsers().GetAllUsers().then(x => setUsers(x.data));
-            //  console.warn('all user data :- ', response.data);
-            //setUsers({ users: response.data });
-
+            await UserService.FetchUsers().GetAllUsers().then(x => setUsers(x.data.reverse()));
         }
         fetchData();
 
-
-
     }, [])
 
-
-    //console.warn('data :- ', users);
+    //console.warn('data :- ', users[0]._id);
 
     return (
         <div>
@@ -36,13 +39,13 @@ export default function UserHome() {
                         <div className="row mb-2">
                             <div className="col-sm-6">
                                 <h1 className="m-0 text-dark">Users</h1>
-                                <a href="/users/UserForm" className="btn btn-sm btn-success mb-2">Add User</a>
+                                <Link to="/Users/AddUser" className="btn btn-sm btn-success mb-2">Add User</Link>
                             </div>
                             {/* /.col */}
                             <div className="col-sm-6">
                                 <ol className="breadcrumb float-sm-right">
                                     <li className="breadcrumb-item">
-                                        <a href="#">Home</a>
+                                        <Link to="/Users/">Home</Link>
                                     </li>
                                     <li className="breadcrumb-item active">Users</li>
                                 </ol>
@@ -75,15 +78,15 @@ export default function UserHome() {
                                     <tbody>
 
                                         {users && users.map(user =>
-                                            <tr key={user.userid}>
-                                                <td>{user.userid}  </td>
-                                                <td>{user.email}</td>
-                                                <td>{user.fullName}</td>
-                                                <td>{user.contactNo}</td>
-                                                <td>{user.country}</td>
+                                            <tr key={user._id}>
+                                                <td>{user.Userid}  </td>
+                                                <td>{user.Email}</td>
+                                                <td>{user.FullName}</td>
+                                                <td>{user.ContactNo}</td>
+                                                <td>{user.Country}</td>
                                                 <td style={{ whiteSpace: 'nowrap' }}>
-                                                    <a href={`/users/edit/${user.userid}`} className="btn btn-sm btn-primary mr-1">Edit</a>
-                                                    <button onClick={() => deleteUser(user.userid)} className="btn btn-sm btn-danger btn-delete-user" disabled={user.isDeleting}>
+                                                    <Link to={`/Users/EditUser/${user._id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
+                                                    <button onClick={() => deleteUser(user._id)} className="btn btn-sm btn-danger btn-delete-user" disabled={user.isDeleting}>
                                                         {user.isDeleting
                                                             ? <span className="spinner-border spinner-border-sm"></span>
                                                             : <span>Delete</span>
@@ -94,14 +97,14 @@ export default function UserHome() {
                                         )}
                                         {!users &&
                                             <tr>
-                                                <td colSpan="4" className="text-center">
+                                                <td colSpan="6" className="text-center">
                                                     <div className="spinner-border spinner-border-lg align-center"></div>
                                                 </td>
                                             </tr>
                                         }
                                         {users && !users.length &&
                                             <tr>
-                                                <td colSpan="4" className="text-center">
+                                                <td colSpan="6" className="text-center">
                                                     <div className="p-2">No Users To Display</div>
                                                 </td>
                                             </tr>
