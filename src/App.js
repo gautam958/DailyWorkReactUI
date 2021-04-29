@@ -12,8 +12,6 @@ import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 function App() {
   return (
 
-
-
     <div className="wrapper">
       <BrowserRouter>
         <Header />
@@ -32,6 +30,9 @@ function App() {
           </Route>
           <Route exact path="/Users/AddUser">
             <UserForm />
+          </Route>
+          <Route match path={`/Users/AddUser/{:id}`}>
+            <ClientProfile />
           </Route>
         </Switch>
 

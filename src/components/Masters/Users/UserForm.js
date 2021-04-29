@@ -4,6 +4,7 @@ import MySwal from '../../common/Sweetalert/SweetAlert';
 import UserService from '../../../Services/Masters/UserService';
 import "../../../styles.css";
 import { Link } from 'react-router-dom';
+import { SettingsSystemDaydreamTwoTone } from "@material-ui/icons";
 
 // disable all types of zoom on page.
 
@@ -21,10 +22,13 @@ const errorMessage = (error) => {
     return <div className="invalid-feedback">{error}</div>;
 };
 
-export default function UserForm() {
+export default function UserForm(props) {
+    console.warn('UserForm Props', props)
 
     const [isValidUser, SetIsValidUser] = useState('');
-    const { register, handleSubmit, reset, watch, setFocus, clearErrors, setError, getValues, formState: { errors, isValid, isDirty } } = useForm();
+    const { register, handleSubmit, reset, watch, setFocus, setValue, clearErrors, setError, getValues, formState: { errors, isValid, isDirty } } = useForm();
+    const [IsEdit, SetIsEdit] = ("False");
+
 
     const onSubmit = async (data) => {
 
@@ -32,7 +36,13 @@ export default function UserForm() {
         console.warn("Form Error : ", errors);
         if (isValidUser !== 'N') {
 
-            const result = await UserService.UserSave().Save(data);
+            const result = null;
+            if (!IsEdit) {
+                result = AddUser(data);
+            }
+            else {
+                result = UpdateUser(props.data._id, data);
+            }
             if (result.status === 200) {
                 ResetForm();
                 console.log("User Saved Successfully");
@@ -54,7 +64,16 @@ export default function UserForm() {
         else {
             setError("Userid");
         }
+
     }
+
+    const AddUser = async (data) => {
+        return await UserService.UserSave().Save(data);
+    }
+    const UpdateUser = async (id, data) => {
+        return await UserService.UpdateUser().UpdateUser(id, data);
+    }
+
     const onErrors = (errors) => {
         console.error(errors);
     }
@@ -78,9 +97,24 @@ export default function UserForm() {
 
     useEffect(() => {
         setFocus("Userid");
+        if (props.data) {
+            if (props.data._id) {
+                SetIsEdit("True");
+                LoadEditData(props.data);
+            }
+        }
     }, [setFocus])
+    const [user, setUser] = useState({});
+    const LoadEditData = (data) => {
+        console.warn('Edit Data', data);
+        const EditData = props.data.slice();
+        if (EditData) {
+            const fields = ['Userid', 'Password', 'ConfirmPassword', 'FullName', 'Email', 'ContactNo', 'Country'];
+            fields.forEach(field => setValue(field, user[field]));
+            setUser(user);
+        }
 
-
+    }
     const ResetForm = () => {
         setFocus("Userid");
         reset();

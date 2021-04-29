@@ -1,29 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import UserService from '../../../Services/Masters/UserService'
 import { Link } from 'react-router-dom';
+import MySwal from '../../common/Sweetalert/SweetAlert';
 
 export default function UserHome() {
 
     const [users, setUsers] = useState(null);
 
-    const deleteUser = (_id) => {
+    const deleteUser = async (_id) => {
         console.log('Delete called' + _id);
 
-        UserService.DeleteUser().Delete(_id).then(x => console.warn("deleted Message ", x));
+        const result = await UserService.DeleteUser().Delete(_id);
+        if (result.status === 200) {
+            let _users = users.slice();
+            _users = _users.filter(u => { return u._id !== _id; });
+            setUsers(_users.reverse());
+        }
+        else {
+            MySwal.fire(
+                'User Delete!',
+                result,
+                'error'
+            )
+        }
 
-        let _users = users.slice();
-        console.warn('User slice ', _users);
-        _users = _users.filter(u => { return u._id !== _id; });
-        console.warn('after delete data ', _users)
-        setUsers({ users: _users.reverse() });
-        console.warn('set session delete data ', users)
+    }
+    async function fetchData() {
+        // You can await here
+        const result = await UserService.FetchUsers().GetAllUsers();
+        if (result.status === 200) {
+            setUsers(result.data.reverse());
+        }
     }
     useEffect(() => {
 
-        async function fetchData() {
-            // You can await here
-            await UserService.FetchUsers().GetAllUsers().then(x => setUsers(x.data.reverse()));
-        }
         fetchData();
 
     }, [])
@@ -85,7 +95,7 @@ export default function UserHome() {
                                                 <td>{user.ContactNo}</td>
                                                 <td>{user.Country}</td>
                                                 <td style={{ whiteSpace: 'nowrap' }}>
-                                                    <Link to={`/Users/EditUser/${user._id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
+                                                    <Link to={`/Users/AddUser/${user._id}`} data={users} className="btn btn-sm btn-primary mr-1">Edit</Link>
                                                     <button onClick={() => deleteUser(user._id)} className="btn btn-sm btn-danger btn-delete-user" disabled={user.isDeleting}>
                                                         {user.isDeleting
                                                             ? <span className="spinner-border spinner-border-sm"></span>
@@ -99,6 +109,8 @@ export default function UserHome() {
                                             <tr>
                                                 <td colSpan="6" className="text-center">
                                                     <div className="spinner-border spinner-border-lg align-center"></div>
+                                                    Please Wait ...
+                                                    {/* {  setTimeout(() => fetchData(), 2000)} */}
                                                 </td>
                                             </tr>
                                         }
